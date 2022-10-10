@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.15.0)
+
+PLATFORMS
+  -darwin-21
+
+DEPENDENCIES
+  minitest
+
+RUBY VERSION
+   ruby 2.7.1p83
+
+BUNDLED WITH
+   2.3.10
