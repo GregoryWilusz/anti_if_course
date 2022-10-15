@@ -16,10 +16,7 @@ class GildedRose
           increase_quality(item)
         end
       elsif backstage_pass?(item)
-        if quality_less_than_50(item)
-          increase_quality(item)
-          handle_backstage_pass(item)
-        end
+        handle_backstage_pass(item)
       end
       if !sulfuras?(item)
         item.sell_in = item.sell_in - 1
@@ -47,14 +44,17 @@ class GildedRose
   private
 
   def handle_backstage_pass(item)
-    if item.sell_in < 11
-      if quality_less_than_50(item)
-        increase_quality(item)
+    if quality_less_than_50(item)
+      increase_quality(item)
+      if item.sell_in < 11
+        if quality_less_than_50(item)
+          increase_quality(item)
+        end
       end
-    end
-    if item.sell_in < 6
-      if quality_less_than_50(item)
-        increase_quality(item)
+      if item.sell_in < 6
+        if quality_less_than_50(item)
+          increase_quality(item)
+        end
       end
     end
   end
