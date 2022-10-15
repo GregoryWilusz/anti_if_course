@@ -6,7 +6,8 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      if sulfuras?(item) or generic?(item)
+      if sulfuras?(item)
+      elsif generic?(item)
         if item.quality > 0
           if !sulfuras?(item)
             decrease_quality(item)
