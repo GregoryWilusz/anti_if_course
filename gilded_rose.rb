@@ -25,14 +25,12 @@ class GildedRose
           if quality_less_than_50(item)
             increase_quality(item)
           end
-        else
-          if backstage_pass?(item)
+        elsif backstage_pass?(item)
             item.quality = item.quality - item.quality
-          else
-            if item.quality > 0
-              if !sulfuras?(item)
-                decrease_quality(item)
-              end
+        else
+          if item.quality > 0
+            if !sulfuras?(item)
+              decrease_quality(item)
             end
           end
         end
