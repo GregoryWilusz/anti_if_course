@@ -15,16 +15,7 @@ class GildedRose
         if quality_less_than_50(item)
           increase_quality(item)
           if backstage_pass?(item)
-            if item.sell_in < 11
-              if quality_less_than_50(item)
-                increase_quality(item)
-              end
-            end
-            if item.sell_in < 6
-              if quality_less_than_50(item)
-                increase_quality(item)
-              end
-            end
+            handle_backstage_pass(item)
           end
         end
       end
@@ -52,6 +43,19 @@ class GildedRose
   end
 
   private
+
+  def handle_backstage_pass(item)
+    if item.sell_in < 11
+      if quality_less_than_50(item)
+        increase_quality(item)
+      end
+    end
+    if item.sell_in < 6
+      if quality_less_than_50(item)
+        increase_quality(item)
+      end
+    end
+  end
 
   def generic?(item)
     !(sulfuras?(item) or backstage_pass?(item) or aged_brie?(item))
