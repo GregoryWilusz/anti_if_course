@@ -86,54 +86,51 @@ class GildedRose
     end
   end
 
+  class GoodCategory
+
+    def build_for(item)
+      if sulfuras?(item)
+        Sulfuras.new(item.quality, item.sell_in)
+      elsif generic?(item)
+        Generic.new(item.quality, item.sell_in)
+      elsif aged_brie?(item)
+        AgedBrie.new(item.quality, item.sell_in)
+      elsif backstage_pass?(item)
+        BackstagePass.new(item.quality, item.sell_in)
+      end
+    end
+
+    private
+
+    def generic?(item)
+      !(sulfuras?(item) or backstage_pass?(item) or aged_brie?(item))
+    end
+
+    def sulfuras?(item)
+      item.name == "Sulfuras, Hand of Ragnaros"
+    end
+
+    def backstage_pass?(item)
+      item.name == "Backstage passes to a TAFKAL80ETC concert"
+    end
+
+    def aged_brie?(item)
+      item.name == "Aged Brie"
+    end
+  end
+
   def initialize(items)
     @items = items
   end
 
   def update_quality
     @items.each do |item|
-      if sulfuras?(item)
-        sulfuras = Sulfuras.new(item.quality, item.sell_in)
-        sulfuras.update
-        item.quality = sulfuras.quality
-        item.sell_in = sulfuras.sell_in
-      elsif generic?(item)
-        generic = Generic.new(item.quality, item.sell_in)
-        generic.update
-        item.quality = generic.quality
-        item.sell_in = generic.sell_in
-      elsif aged_brie?(item)
-        aged_brie = AgedBrie.new(item.quality, item.sell_in)
-        aged_brie.update
-        item.quality = aged_brie.quality
-        item.sell_in = aged_brie.sell_in
-      elsif backstage_pass?(item)
-        backastage_pass = BackstagePass.new(item.quality, item.sell_in)
-        backastage_pass.update
-        item.quality = backastage_pass.quality
-        item.sell_in = backastage_pass.sell_in
-      end
+      good = GoodCategory.new.build_for(item)
+      good.update
+      item.quality = good.quality
+      item.sell_in = good.sell_in
     end
   end
-
-  private
-
-  def generic?(item)
-    !(sulfuras?(item) or backstage_pass?(item) or aged_brie?(item))
-  end
-
-  def sulfuras?(item)
-    item.name == "Sulfuras, Hand of Ragnaros"
-  end
-
-  def backstage_pass?(item)
-    item.name == "Backstage passes to a TAFKAL80ETC concert"
-  end
-
-  def aged_brie?(item)
-    item.name == "Aged Brie"
-  end
-
 end
 
 class Item
