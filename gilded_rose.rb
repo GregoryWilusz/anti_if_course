@@ -23,17 +23,6 @@ module Inventory
       @amount < 50
     end
   end
-  class Sulfuras
-
-    attr_reader :quality, :sell_in
-
-    def initialize(quality, sell_in)
-      @quality = quality
-      @sell_in = sell_in
-    end
-
-    def update; end
-  end
 
   class Generic
 
@@ -112,9 +101,7 @@ class GildedRose
   class GoodCategory
 
     def build_for(item)
-      if sulfuras?(item)
-        Inventory::Sulfuras.new(item.quality, item.sell_in)
-      elsif generic?(item)
+      if generic?(item)
         Inventory::Generic.new(item.quality, item.sell_in)
       elsif aged_brie?(item)
         Inventory::AgedBrie.new(item.quality, item.sell_in)
@@ -126,11 +113,7 @@ class GildedRose
     private
 
     def generic?(item)
-      !(sulfuras?(item) or backstage_pass?(item) or aged_brie?(item))
-    end
-
-    def sulfuras?(item)
-      item.name == "Sulfuras, Hand of Ragnaros"
+      !(backstage_pass?(item) or aged_brie?(item))
     end
 
     def backstage_pass?(item)
@@ -148,11 +131,19 @@ class GildedRose
 
   def update_quality
     @items.each do |item|
+      next if sulfuras?(item)
+
       good = GoodCategory.new.build_for(item)
       good.update
       item.quality = good.quality
       item.sell_in = good.sell_in
     end
+  end
+
+  private
+
+  def sulfuras?(item)
+    item.name == "Sulfuras, Hand of Ragnaros"
   end
 end
 
