@@ -125,7 +125,7 @@ class GildedRose
   private
 
   def sulfuras?(item)
-    item.name == "Sulfuras, Hand of Ragnaros"
+    item.name.eql?("Sulfuras, Hand of Ragnaros")
   end
 end
 
