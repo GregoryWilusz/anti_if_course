@@ -1,97 +1,98 @@
-module Inventory
-
-  class Quality
-
-    attr_reader :amount
-    def initialize(amount)
-      @amount = amount
-    end
-
-    def degrade
-      @amount -= 1 if amount > 0
-    end
-
-    def increase
-      @amount += 1 if amount < 50
-    end
-
-    def reset
-      @amount = 0
-    end
-  end
-
-  class Generic
-
-    attr_reader :sell_in
-
-    def initialize(quality, sell_in)
-      @quality = Quality.new(quality)
-      @sell_in = sell_in
-    end
-
-    def quality
-      @quality.amount
-    end
-
-    def update
-      @quality.degrade
-      @sell_in = sell_in - 1
-      if sell_in < 0
-        @quality.degrade
-      end
-    end
-  end
-
-  class AgedBrie
-
-    attr_reader :sell_in
-
-    def initialize(quality, sell_in)
-      @quality = Quality.new(quality)
-      @sell_in = sell_in
-    end
-
-    def quality
-      @quality.amount
-    end
-
-    def update
-      @quality.increase
-      @sell_in = sell_in - 1
-      @quality.increase if sell_in < 0
-    end
-  end
-
-  class BackstagePass
-
-    attr_reader :sell_in
-
-    def initialize(quality, sell_in)
-      @quality = Quality.new(quality)
-      @sell_in = sell_in
-    end
-
-    def quality
-      @quality.amount
-    end
-
-    def update
-      @quality.increase
-      if sell_in < 11
-        @quality.increase
-      end
-      if sell_in < 6
-        @quality.increase
-      end
-      @sell_in = sell_in - 1
-      if sell_in < 0
-        @quality.reset
-      end
-    end
-  end
-end
-
 class GildedRose
+
+  module Inventory
+
+    class Quality
+
+      attr_reader :amount
+      def initialize(amount)
+        @amount = amount
+      end
+
+      def degrade
+        @amount -= 1 if amount > 0
+      end
+
+      def increase
+        @amount += 1 if amount < 50
+      end
+
+      def reset
+        @amount = 0
+      end
+    end
+
+    class Generic
+
+      attr_reader :sell_in
+
+      def initialize(quality, sell_in)
+        @quality = Quality.new(quality)
+        @sell_in = sell_in
+      end
+
+      def quality
+        @quality.amount
+      end
+
+      def update
+        @quality.degrade
+        @sell_in = sell_in - 1
+        if sell_in < 0
+          @quality.degrade
+        end
+      end
+    end
+
+    class AgedBrie
+
+      attr_reader :sell_in
+
+      def initialize(quality, sell_in)
+        @quality = Quality.new(quality)
+        @sell_in = sell_in
+      end
+
+      def quality
+        @quality.amount
+      end
+
+      def update
+        @quality.increase
+        @sell_in = sell_in - 1
+        @quality.increase if sell_in < 0
+      end
+    end
+
+    class BackstagePass
+
+      attr_reader :sell_in
+
+      def initialize(quality, sell_in)
+        @quality = Quality.new(quality)
+        @sell_in = sell_in
+      end
+
+      def quality
+        @quality.amount
+      end
+
+      def update
+        @quality.increase
+        if sell_in < 11
+          @quality.increase
+        end
+        if sell_in < 6
+          @quality.increase
+        end
+        @sell_in = sell_in - 1
+        if sell_in < 0
+          @quality.reset
+        end
+      end
+    end
+  end
+
   class GoodCategory
 
     def build_for(item)
