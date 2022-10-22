@@ -35,13 +35,13 @@ class GildedRose
 
       class Expired
 
-        def update(quality, _)
+        def update(quality)
           quality.degrade
           quality.degrade
         end
       end
 
-      def update(quality, _)
+      def update(quality)
         quality.degrade
       end
     end
@@ -57,13 +57,13 @@ class GildedRose
       end
       class Expired
 
-        def update(quality, _)
+        def update(quality)
           quality.increase
           quality.increase
         end
       end
 
-      def update(quality, _)
+      def update(quality)
         quality.increase
       end
     end
@@ -71,27 +71,43 @@ class GildedRose
     class BackstagePass
 
       def self.build(sell_in)
-        if sell_in < 0
+        case
+        when sell_in < 0
           Expired.new
+        when sell_in < 5
+          LessThan5Days.new
+        when sell_in < 10
+          LessThan10Days.new
         else
           new
         end
       end
       class Expired
 
-        def update(quality, _)
+        def update(quality)
           quality.reset
         end
       end
 
-      def update(quality, sell_in)
+      class LessThan5Days
+
+        def update(quality)
+          quality.increase
+          quality.increase
+          quality.increase
+        end
+      end
+
+      class LessThan10Days
+
+        def update(quality)
+          quality.increase
+          quality.increase
+        end
+      end
+
+      def update(quality)
         quality.increase
-        if sell_in < 10
-          quality.increase
-        end
-        if sell_in < 5
-          quality.increase
-        end
       end
     end
   end
@@ -121,7 +137,7 @@ class GildedRose
       item.sell_in -= 1
       quality = Inventory::Quality.new(item.quality)
       good = GoodCategory.new.build_for(item)
-      good.update(quality, item.sell_in)
+      good.update(quality)
       item.quality = quality.amount
     end
   end
